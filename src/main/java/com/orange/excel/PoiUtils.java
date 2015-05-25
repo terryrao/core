@@ -1,10 +1,7 @@
 package com.orange.excel;
 
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.*;
+import org.raowei.test.annotaionprocessor.annotaions.Version;
 
 /**
  * poi的一些工具类
@@ -12,6 +9,7 @@ import org.apache.poi.ss.usermodel.Workbook;
  * @author terryrao
  *
  */
+@Version(major = -1,minor = -1)
 public class PoiUtils {
 
 	/**

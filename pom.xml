@@ -5,6 +5,7 @@
 		<groupId>com.raowei</groupId>
 		<artifactId>parent</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
+		<relativePath>../parent/pom.xml</relativePath>
 	</parent>
 	<artifactId>core</artifactId>
 	<packaging>jar</packaging>
@@ -36,6 +37,10 @@
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi</artifactId>
 			<version>3.11</version>
+		</dependency>
+		<dependency>
+			<groupId>org.raowei</groupId>
+			<artifactId>test</artifactId>
 		</dependency>
 	</dependencies>
 </project>
