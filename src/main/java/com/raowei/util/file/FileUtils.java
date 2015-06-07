@@ -1,13 +1,12 @@
 package com.raowei.util.file;
 
+import com.raowei.log.Log;
 import com.sun.istack.internal.NotNull;
 
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.nio.file.*;
 import java.nio.file.attribute.FileAttribute;
 import java.nio.file.attribute.PosixFilePermission;
 import java.nio.file.attribute.PosixFilePermissions;
@@ -18,6 +17,7 @@ import java.util.regex.Pattern;
  * Created by terryrao on 5/27/2015.
  */
 public class FileUtils {
+    private static Log logger = Log.getLogger(FileUtils.class);
     /**
      * 获取目录下特定文件或文件夹名称的集合
      *
@@ -68,9 +68,41 @@ public class FileUtils {
         try {
             return Files.createFile(target,attr);
         } catch (IOException e) {
-            throw new RuntimeException("can not creat specific file target[" + path + "] \n perm=[" + perm + "]");
+            throw new RuntimeException("can not creat specific file target[" + path + "] \n perm=[" + perm + "]",e);
         }
 
     }
+
+    public static void copy(String source,String target) {
+        copy(source,target,null);
+    }
+
+    public static void copy(String source,String target,StandardCopyOption  option) {
+        Path s = Paths.get(source);
+        Path t = Paths.get(target);
+
+        try {
+            if (option != null) {
+                Files.copy(s,t,option);
+            }else {
+                Files.copy(s,t);
+            }
+
+        } catch (IOException e) {
+            throw new RuntimeException("can not copy file source=[" + s +"] target=[" + t + "]",e);
+        }
+    }
+
+    public static void move(String source,String target,StandardCopyOption... option) {
+        Path s = Paths.get(source);
+        Path t = Paths.get(target);
+        try {
+            Files.move(s,t,option);
+        } catch (IOException e) {
+            throw new RuntimeException("can not move file source=[" + s +"] target=[" + t + "]",e);
+
+        }
+    }
+
 
 }

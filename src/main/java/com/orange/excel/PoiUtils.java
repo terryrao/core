@@ -1,7 +1,6 @@
 package com.orange.excel;
 
 import org.apache.poi.ss.usermodel.*;
-import org.raowei.test.annotaionprocessor.annotaions.Version;
 
 /**
  * poi的一些工具类
@@ -9,7 +8,6 @@ import org.raowei.test.annotaionprocessor.annotaions.Version;
  * @author terryrao
  *
  */
-@Version(major = -1,minor = -1)
 public class PoiUtils {
 
 	/**
