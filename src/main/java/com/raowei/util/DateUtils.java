@@ -4,7 +4,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 /**
- * @author raow
+ * @author terryrao
  * @version 2015-09-13
  * @since 1.0
  */
@@ -70,8 +70,6 @@ public class DateUtils {
     /**
      * 获取指定日期当月最后一天 date为null时为当前月
      *
-     * @param date
-     * @return Date
      */
     public static Date getLastDayOfMonth(Date date) {
         Calendar c = Calendar.getInstance();
@@ -86,8 +84,6 @@ public class DateUtils {
     /**
      * 获取指定日期当月第一天 date为null时为当前月
      *
-     * @param date
-     * @return Date
      */
     public static Date getFirstDayOfMonth(Date date) {
         Calendar c = Calendar.getInstance();
