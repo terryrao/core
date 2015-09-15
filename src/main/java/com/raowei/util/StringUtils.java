@@ -3,20 +3,22 @@ package com.raowei.util;
 import com.raowei.log.Log;
 
 import java.io.*;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Created by terryrao on 5/25/2015.
+ * HttpServletRequest相关操作
+ * @author terryrao
+ * @since 1.0 2015-05-15
  */
 public class StringUtils {
     private static Log logger = Log.getLogger(StringUtils.class);
-    public static boolean isBlank (String string) {
+
+    public static boolean isBlank(String string) {
         if (string == null || string.equals("")) {
             return Boolean.TRUE;
-        }else {
+        } else {
             return Boolean.FALSE;
         }
     }
@@ -83,4 +85,69 @@ public class StringUtils {
         return new ByteArrayInputStream(configuration.getBytes("UTF-8"));
     }
 
+
+    /**
+     * 从类似于 key&value的字符串中提出map键值对出来，重复的key值后面将覆盖前面
+     *
+     * @param paramsString 要做提取操作的字符串
+     * @return 包含键值对的Map
+     */
+    public static Map<String, String> extractPropertiesFromParams(String paramsString) {
+        String[] params;
+        if (paramsString.contains("&")) {
+            params = StringUtils.splitByWholeSeparator(paramsString, "&");
+        } else {
+            params = new String[]{paramsString};
+        }
+
+        Map<String, String> map = new HashMap<>(); // 防止key重复
+        for (String s : params) {
+            if (StringUtils.contains(s, "=")) {
+                String[] temp = StringUtils.splitByWholeSeparator(s, "=", 2);
+                if (temp != null && temp.length == 2) {
+                    if (StringUtils.isBlank(temp[1])) {
+                        continue;
+                    }
+                    map.put(temp[0], temp[1]);
+
+                }
+            }
+        }
+        return map;
+    }
+
+
+    /**
+     * 包装 {@link org.apache.commons.lang3.StringUtils#splitByWholeSeparatorPreserveAllTokens(String, String)}
+     *
+     * @param string    要分割的字符串
+     * @param separator 分割符
+     * @return 返回分割后的字符串数组
+     */
+    public static String[] splitByWholeSeparator(String string, String separator) {
+        return org.apache.commons.lang3.StringUtils.splitByWholeSeparator(string, separator);
+    }
+
+    /**
+     * 包装{@link org.apache.commons.lang3.StringUtils#contains(CharSequence, CharSequence)}
+     *
+     * @param str        要检查的字符串
+     * @param searchChar 要寻找的字符串
+     * @return 如果找到则返回true 反之返回false
+     */
+    public static boolean contains(String str, String searchChar) {
+        return org.apache.commons.lang3.StringUtils.contains(str, searchChar);
+    }
+
+    /**
+     * 包装{@link org.apache.commons.lang3.StringUtils#splitByWholeSeparator(String, String, int)}
+     *
+     * @param str       要分割的字符串
+     * @param separator 分割符
+     * @param max       返回数组中成员的最大数量
+     * @return 返回分割后的字符串数组
+     */
+    public static String[] splitByWholeSeparator(String str, String separator, int max) {
+        return org.apache.commons.lang3.StringUtils.splitByWholeSeparator(str, separator, max);
+    }
 }
