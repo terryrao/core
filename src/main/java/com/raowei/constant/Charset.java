@@ -7,7 +7,7 @@ package com.raowei.constant;
  * @since 1.0
  * Copyright ©   e路同心（www.88bank.com）  All right reserved
  */
-public class CharsetUtil {
+public class Charset {
     /**
      * utf_8
      */
