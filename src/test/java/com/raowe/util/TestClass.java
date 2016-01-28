@@ -1,9 +1,5 @@
 package com.raowe.util;
 
-import static org.junit.Assert.fail;
-
-import com.raowe.util.model.TestMode;
-import org.apache.poi.util.SystemOutLogger;
 import org.junit.Test;
 
 import java.io.*;
@@ -17,8 +13,18 @@ import java.nio.channels.spi.SelectorProvider;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
+import java.time.Clock;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.ThreadLocalRandom;
+
+import static org.junit.Assert.fail;
 
 public class TestClass {
 
@@ -415,5 +421,62 @@ public class TestClass {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
+    }
+
+
+    @Test
+    public void testOptional() {
+        Optional<String> fullName = Optional.ofNullable(null);
+        System.out.println("fileName is set ? " + fullName.isPresent());
+        System.out.println("fileName : " + fullName.orElseGet(() -> "[NON]"));
+        System.out.println("fullName :" + fullName.map(s -> "Hey ->" + s +"!").orElse("NUll???"));
+
+        Optional<String> fullName2 = Optional.of("Tom");
+        System.out.println("fileName is set ? " + fullName2.isPresent());
+        System.out.println("fileName : " + fullName2.orElseGet(() -> "[NON]"));
+        System.out.println("fullName :" + fullName2.map(s -> "Hey ->" + s + "!").orElse("NUll???"));
+    }
+
+
+    @Test
+    public void tsetClock() {
+        Clock clock = Clock.systemUTC();
+        System.out.println(clock.instant()); //2016-01-18T02:19:04.656Z
+        System.out.println(clock.millis()); //1453083544712
+
+
+        //本地时间
+        final LocalDate date = LocalDate.now();
+        System.out.println(date); //2016-01-18 只有日期部分
+
+        final LocalTime time = LocalTime.now();
+        System.out.println(time); //10:20:23.733 只有时间部分
+
+
+        final LocalDate dateFromLock = LocalDate.now(clock);
+        System.out.println(dateFromLock);
+        final LocalTime timeFromClock = LocalTime.now(clock);
+        System.out.println(timeFromClock);
+
+
+        //格式化
+        DateTimeFormatter isoDateTime = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime dateTime = LocalDateTime.parse("2015-01-18 12:23:15", isoDateTime);
+        String s = dateTime.format(isoDateTime);
+        System.out.println(s);
+
+    }
+
+    @Test
+    public void testArrayParalle() {
+        long[] arrays = new long[1000000];
+        Arrays.parallelSetAll(arrays,index -> arrays[index] = ThreadLocalRandom.current().nextInt(10000));
+        Arrays.stream(arrays).limit(10).forEach(i -> System.out.print(i + " "));
+        System.out.println();
+        Arrays.parallelSort(arrays);
+
+        Arrays.stream(arrays).limit(10).forEach(i -> System.out.print(i + " " ));
+
+
     }
 }
