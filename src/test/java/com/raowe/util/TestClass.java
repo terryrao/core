@@ -40,7 +40,7 @@ public class TestClass {
         fail("Not yet implemented");
     }
 
-    //	@Test
+    	@Test
     public void testNameGenerator() {
         String[] aStrings = new String[]{"sdfd", "sdfa", "sdfa"};
         String name = TestClass.unqualifiedClassName(aStrings.getClass());
