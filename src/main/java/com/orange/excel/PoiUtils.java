@@ -1,7 +1,9 @@
 package com.orange.excel;
 
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.*;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,10 +22,17 @@ public class PoiUtils {
      * @param is   文件的输入流
      * @param clss 要反射出来的对象的clazz类
      */
-    public static <T> List<T> importExcel(InputStream is, Class<T> clss) {
+    public static <T> List<T> importExcel(InputStream is, Class<T> clss) throws IOException {
+        Workbook workbook = getWorkBook(is);
+        List<Sheet> sheets = getSheets(workbook);
+        sheets.stream().flatMap(sheet -> getRows(sheet).stream()).flatMap(row -> {
+            List<Cell> cells = getCells(row);
 
+        })
         return null;
     }
+
+
 
     /**
      * 从Cell里面获即一个单元格样式，并保留该单元格原来的样式
@@ -99,6 +108,10 @@ public class PoiUtils {
 
         }
         return cells;
+    }
+
+    public static Workbook getWorkBook(InputStream is) throws IOException {
+        return new HSSFWorkbook(is);
     }
 
 
