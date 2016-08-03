@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.stream.Stream;
 
 import static org.junit.Assert.fail;
 
@@ -477,6 +478,16 @@ public class TestClass {
 
         Arrays.stream(arrays).limit(10).forEach(i -> System.out.print(i + " " ));
 
+
+    }
+
+
+    @Test
+    public void testFlatMap() throws IOException {
+        Path path = Paths.get("H:\\catalina.out");
+        BufferedReader reader = Files.newBufferedReader(path,StandardCharsets.UTF_8);
+        reader.lines().flatMap(line -> Stream.of(line.replace(":","--").split(" ")).map(word -> word + "!!"))
+                .forEach(System.out::println);
 
     }
 }
