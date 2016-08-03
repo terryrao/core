@@ -18,10 +18,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Stream;
 
@@ -489,5 +486,24 @@ public class TestClass {
         reader.lines().flatMap(line -> Stream.of(line.replace(":","--").split(" ")).map(word -> word + "!!"))
                 .forEach(System.out::println);
 
+    }
+
+    /**
+     * AAB 1378
+     */
+    @Test
+    public void testAtoInt () {
+        System.out.println(this.getInt("AAB"));
+    }
+
+    private int getInt(String col) {
+        col = col.toUpperCase();
+        // 从-1开始计算,字母重1开始运算。这种总数下来算数正好相同。
+        int count = -1;
+        char[] cs = Collections.reverse(new ArrayList<Character>(col.toCharArray());
+        for (int i = 0; i < cs.length; i++) {
+            count += (cs[i] - 64) * Math.pow(26,  cs.length - 1 - i);
+        }
+        return count;
     }
 }

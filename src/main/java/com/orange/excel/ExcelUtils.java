@@ -41,7 +41,7 @@ public class ExcelUtils<T> {
             if (isHeaderRow(row)) {
 
             }
-        })
+        });
         return null;
     }
 
@@ -50,7 +50,7 @@ public class ExcelUtils<T> {
      * 将每一行转成列
      */
     private T mapRowToEnitiy(Row row) {
-
+        return null;
     }
 
     /**
@@ -138,5 +138,54 @@ public class ExcelUtils<T> {
         return new HSSFWorkbook(is);
     }
 
+
+    /**
+     * 属性对应表
+     */
+    private class AttributeMapColumn {
+        private String name;
+        private String column;
+        private int order;
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getColumn() {
+            return column;
+        }
+
+        public void setColumn(String column) {
+            this.column = column;
+        }
+
+
+        public int getOrder() {
+            return order;
+        }
+
+        public void setOrder(int order) {
+            this.order = order;
+        }
+
+
+        /**
+         * 将字母映射成数字序号
+         * 将 A,B,C,D .... 转成 1,2,3,4....
+         */
+        public int getOrderByCol(String column) {
+            char[] chars = column.toUpperCase().toCharArray();
+            int count = -1;
+            //大写的A的ascii码从65开始
+            for (int i = 0; i < chars.length; i++) {
+                count += (chars[i] -64)*Math.pow(26,i);
+            }
+            return 0;
+        }
+    }
 
 }
