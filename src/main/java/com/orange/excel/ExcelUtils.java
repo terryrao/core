@@ -14,16 +14,27 @@ import java.util.Map;
  *
  * @author terryrao
  */
-public class ExcelUtils {
+public class ExcelUtils<T> {
 
+    /**
+     * 要反射出来的对象的clazz类
+     */
+    private Class<T> aClass;
+
+    private ExcelUtils(Class<T> tClass) {
+        this.aClass = tClass;
+    }
+
+    public static <T> ExcelUtils getInstance(Class<T> aClass) {
+        return new ExcelUtils(aClass);
+    }
 
     /**
      * 导入excel 文件 转化成相应的List文件
      *
-     * @param is   文件的输入流
-     * @param clss 要反射出来的对象的clazz类
+     * @param is 文件的输入流
      */
-    public static <T> List<T> importExcel(InputStream is, Class<T> clss) throws IOException {
+    public List<T> importExcel(InputStream is) throws IOException {
         Workbook workbook = getWorkBook(is);
         List<Sheet> sheets = getSheets(workbook);
         sheets.stream().flatMap(sheet -> getRows(sheet).stream()).peek(row -> {
@@ -38,14 +49,14 @@ public class ExcelUtils {
     /**
      * 将每一行转成列
      */
-    private static <T> T mapRowToEnitiy(Row row) {
+    private T mapRowToEnitiy(Row row) {
 
     }
 
     /**
      * 是不是标题行
      */
-    private static boolean isHeaderRow(Row row) {
+    private boolean isHeaderRow(Row row) {
         return row.getRowNum() == row.getSheet().getFirstRowNum();
     }
 
@@ -53,7 +64,7 @@ public class ExcelUtils {
     /**
      * 从Cell里面获即一个单元格样式，并保留该单元格原来的样式
      */
-    public static CellStyle getCellStyle(Cell cell) {
+    public CellStyle getCellStyle(Cell cell) {
         Workbook workbook = cell.getRow().getSheet().getWorkbook();
         CellStyle cellStyle = workbook.createCellStyle();
         cellStyle.cloneStyleFrom(cell.getCellStyle()); // 保留原来的格式
@@ -67,7 +78,7 @@ public class ExcelUtils {
      * @param index 行索引（从0开始）
      * @return Row
      */
-    public static Row getRow(Sheet sheet, int index) {
+    public Row getRow(Sheet sheet, int index) {
         return sheet.getRow(index) == null ? sheet.createRow(index) : sheet.getRow(index);
     }
 
@@ -78,7 +89,7 @@ public class ExcelUtils {
      * @param index 列索引（从0开始）
      * @return Cell
      */
-    public static Cell getCell(Row row, int index) {
+    public Cell getCell(Row row, int index) {
         return row.getCell(index) == null ? row.createCell(index) : row.getCell(index);
     }
 
@@ -86,7 +97,7 @@ public class ExcelUtils {
     /**
      * 获取所有的工作薄
      */
-    public static List<Sheet> getSheets(Workbook workbook) {
+    public List<Sheet> getSheets(Workbook workbook) {
         List<Sheet> list = new ArrayList<>();
         int length = workbook.getNumberOfSheets();
         for (int i = 0; i < length; i++) {
@@ -98,7 +109,7 @@ public class ExcelUtils {
     /**
      * 获取所有的行
      */
-    public static List<Row> getRows(Sheet sheet) {
+    public List<Row> getRows(Sheet sheet) {
         List<Row> rows = new ArrayList<>();
         int startRowIndex = sheet.getFirstRowNum();
         int endRowIndex = sheet.getLastRowNum();
@@ -112,7 +123,7 @@ public class ExcelUtils {
     /**
      * 获取所有的单元格
      */
-    public static List<Cell> getCells(Row row) {
+    public List<Cell> getCells(Row row) {
         List<Cell> cells = new ArrayList<>();
         int start = row.getFirstCellNum();
         int end = row.getLastCellNum();
@@ -123,7 +134,7 @@ public class ExcelUtils {
         return cells;
     }
 
-    public static Workbook getWorkBook(InputStream is) throws IOException {
+    public Workbook getWorkBook(InputStream is) throws IOException {
         return new HSSFWorkbook(is);
     }
 
